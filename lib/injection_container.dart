@@ -9,10 +9,17 @@ import 'features/tasks/domain/repositories/task_repository.dart';
 import 'features/tasks/domain/usecases/add_task.dart';
 import 'features/tasks/domain/usecases/delete_task.dart';
 import 'features/tasks/domain/usecases/get_tasks.dart';
+import 'features/tasks/presentation/bloc/task_bloc.dart';
 
 final sl = GetIt.instance; // "sl" = service locator
 
 Future<void> init() async {
+  // Dans lib/injection_container.dart, ajoute en tête de init() :
+
+  // ── BLoC ──────────────────────────────────────────────
+  sl.registerFactory(
+    () => TaskBloc(getTasks: sl(), addTask: sl(), deleteTask: sl()),
+  );
   // ── UseCases ──────────────────────────────────────────
   // registerFactory = nouvelle instance à chaque appel
   sl.registerFactory(() => GetTasks(sl()));
